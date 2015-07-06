@@ -52,8 +52,10 @@ cabal-version:       >=1.10
 library
   -- Modules exported by the library.
   exposed-modules:     Network.HTTP.Client.Free
-                       Network.HTTP.Client.Free.HttpClient
+                       Network.HTTP.Client.Free.Interpreter.HttpClient
+                       Network.HTTP.Client.Free.Interpreter.PureClient
                        Network.HTTP.Client.Free.Types
+                       Network.HTTP.Client.Free.Util
   
   -- Modules included in this library but not exported.
   -- other-modules:       
