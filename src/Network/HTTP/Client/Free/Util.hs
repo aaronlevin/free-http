@@ -13,5 +13,3 @@ import Network.HTTP.Types.Method (StdMethod, renderStdMethod)
 -- | set the method of a request, overriding the previous method.
 setMethod :: StdMethod -> Request -> Request
 setMethod m req = let !nMethod = renderStdMethod m in req { method = nMethod }
-
-
