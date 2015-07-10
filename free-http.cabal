@@ -51,7 +51,7 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Network.HTTP.Client.Free
+  exposed-modules:     Network.HTTP.Client.Free.ArbitraryClient
                        Network.HTTP.Client.Free.HttpClient
                        Network.HTTP.Client.Free.PureClient
                        Network.HTTP.Client.Free.Types
@@ -70,7 +70,9 @@ library
                      , http-client
                      , http-types
                      , mtl
+                     , QuickCheck
                      , text
+                     , time
                      , transformers
   
   -- Directories containing source files.

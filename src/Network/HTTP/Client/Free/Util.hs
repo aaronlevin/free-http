@@ -7,8 +7,8 @@ module Network.HTTP.Client.Free.Util (
     setMethod
 ) where
 
-import Network.HTTP.Client (Request(method))
-import Network.HTTP.Types.Method (StdMethod, renderStdMethod)
+import           Network.HTTP.Client       (Request (method))
+import           Network.HTTP.Types.Method (StdMethod, renderStdMethod)
 
 -- | set the method of a request, overriding the previous method.
 setMethod :: StdMethod -> Request -> Request

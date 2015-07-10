@@ -10,14 +10,16 @@ module Network.HTTP.Client.Free.HttpClient (
     , runTHttp
 ) where
 
-import Control.Monad.IO.Class (liftIO, MonadIO)
-import Control.Monad.Trans (lift, MonadTrans)
-import Control.Monad.Trans.Free.Church (FT, liftF, iterT, iterTM)
-import Data.ByteString.Lazy (ByteString)
-import Network.HTTP.Client (httpLbs, Manager, Request, Response)
-import Network.HTTP.Client.Free.Types (HttpF(HttpF), ResponseType, RequestType)
-import Network.HTTP.Client.Free.Util (setMethod)
-import Network.HTTP.Types.Method (renderStdMethod)
+import           Control.Monad.IO.Class          (MonadIO, liftIO)
+import           Control.Monad.Trans             (MonadTrans, lift)
+import           Control.Monad.Trans.Free.Church (FT, iterT, iterTM, liftF)
+import           Data.ByteString.Lazy            (ByteString)
+import           Network.HTTP.Client             (Manager, Request, Response,
+                                                  httpLbs)
+import           Network.HTTP.Client.Free.Types  (HttpF (HttpF), RequestType,
+                                                  ResponseType)
+import           Network.HTTP.Client.Free.Util   (setMethod)
+import           Network.HTTP.Types.Method       (renderStdMethod)
 
 -------------------------------------------------------------------------------
 -- | 'HttpClient' is an uninhabited type used to identify the http-client
