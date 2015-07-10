@@ -58,7 +58,7 @@ library
                        Network.HTTP.Client.Free.Util
   
   -- Modules included in this library but not exported.
-  -- other-modules:       
+  other-modules:       Network.HTTP.Client.Free.Examples
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    

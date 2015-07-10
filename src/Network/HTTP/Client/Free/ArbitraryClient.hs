@@ -1,137 +1,71 @@
 {-| An interpreter that fails randomly
 -}
 
+{-# LANGUAGE TypeFamilies #-}
+
 module Network.HTTP.Client.Free.ArbitraryClient where
 
-import Data.ByteString.Char8 (pack)
-import Data.Time (UTCTime(UTCTime), fromGregorian)
-import Control.Applicative ((<$>), (<*>))
-import           Network.HTTP.Types.Method (StdMethod (..))
-import Network.HTTP.Types.Header
-import Network.HTTP.Types.Status
-import Network.HTTP.Types.Version (http09, http10, http11, HttpVersion)
-import Network.HTTP.Client.Internal (Cookie(Cookie), Response)
-import           Test.QuickCheck           (choose, Gen, Arbitrary(arbitrary), elements, suchThat)
+import Control.Monad.IO.Class (MonadIO, liftIO)
+import           Control.Monad.Trans             (MonadTrans, lift)
+import           Control.Monad.Trans.Free.Church (FT, iterT, iterTM, liftF)
+import Control.Applicative ((<$>))
+import Network.HTTP.Client.Free.Types (HttpF(HttpF), ResponseType)
+import           Test.QuickCheck           (Arbitrary, arbitrary, sample')
 
--- | an arbitrary 'Status'
-arbStatus :: Gen Status
-arbStatus = elements [ status100
-                     , status101
-                     , status200
-                     , status201
-                     , status203
-                     , status204
-                     , status205
-                     , status206
-                     , status300
-                     , status301
-                     , status302
-                     , status303
-                     , status304
-                     , status305
-                     , status307
-                     , status400
-                     , status401
-                     , status402
-                     , status403
-                     , status404
-                     , status405
-                     , status406
-                     , status407
-                     , status408
-                     , status409
-                     , status410
-                     , status411
-                     , status412
-                     , status413
-                     , status414
-                     , status415
-                     , status416
-                     , status417
-                     , status418
-                     , status428
-                     , status429
-                     , status431
-                     , status500
-                     , status501
-                     , status502
-                     , status503
-                     , status504
-                     , status505
-                     , status511
-                     ]
+-------------------------------------------------------------------------------
+-- | Peel a layer of the 'HttpF' functor and generate a random Response.
+iterTHttp :: ( r ~ ResponseType client
+             , Arbitrary r
+             , Monad m
+             , MonadIO m
+             )
+          => HttpF client (m a)
+          -> m a
+iterTHttp (HttpF _ _ next) = head <$> liftIO (sample' arbitrary) >>= next
 
--- | an arbitrary 'HttpVersion'
-arbHttpVersion :: Gen HttpVersion
-arbHttpVersion = elements [ http09
-                          , http10
-                          , http11
-                          ]
+-------------------------------------------------------------------------------
+-- | Peel a layer of the 'HttpF' functor and generate a random Response. This 
+-- time the base monad is 't m'.
+iterTMHttp :: ( r ~ ResponseType client
+              , Arbitrary r
+              , Monad m
+              , MonadIO m
+              , MonadTrans t
+              , Monad (t m)
+              )
+           => HttpF client (t m a)
+           -> t m a
+iterTMHttp (HttpF _ _ next) = head <$> (lift . liftIO) (sample' arbitrary) >>= next
 
--- | an arbitrary 'HeaderName'
-arbHeaderName :: Gen HeaderName
-arbHeaderName = elements [ hAccept
-                         , hAcceptLanguage
-                         , hAuthorization
-                         , hCacheControl
-                         , hConnection
-                         , hContentEncoding
-                         , hContentLength
-                         , hContentMD5
-                         , hContentType
-                         , hCookie
-                         , hDate
-                         , hIfModifiedSince
-                         , hIfRange
-                         , hLastModified
-                         , hLocation
-                         , hRange
-                         , hReferer
-                         , hServer
-                         , hUserAgent
-                         ]
+-------------------------------------------------------------------------------
+-- | The main http-client interpreter. The client is free to specify the base
+-- effect monad so long as there is an instance of 'MonadIO' for it in scope.
+runHttp :: ( r ~ ResponseType client
+           , Arbitrary r
+           , Monad m
+           , MonadIO m
+           )
+        => ignore
+        -- ^ a paramter that will be ignored. It is included so client's can
+        -- hot-swap interpreters.
+        -> FT (HttpF client) m a
+        -> m a
+runHttp = const (iterT iterTHttp)
 
--- | an arbitrary Header. This is not performant, but you shouldn't
--- be using this client in production anyway.
-arbHeader :: Gen Header
-arbHeader = (,) <$> arbHeaderName <*> fmap pack arbitrary
-
--- | an arbitrary UTCTime
-arbUtcTime :: Gen UTCTime
-arbUtcTime = do
-    rDay <- choose (1,29) :: Gen Int
-    rMonth <- choose (1,12) :: Gen Int
-    rYear <- choose (1970, 2015) :: Gen Integer
-    rTime <- choose (0,86401) :: Gen Int
-    return $ UTCTime (fromGregorian rYear rMonth rDay) (fromIntegral rTime)
-
-
--- | an arbtirary Cookie
-arbCookie :: Gen Cookie
-arbCookie = do
-    cCreationTime    <- arbUtcTime
-    cLastAccessTime  <- suchThat arbUtcTime (cCreationTime <=)
-    cExpiryTime      <- suchThat arbUtcTime (cLastAccessTime <=)
-    cName           <- fmap pack arbitrary
-    cValue          <- fmap pack arbitrary
-    cDomain         <- fmap pack arbitrary
-    cPath           <- fmap pack arbitrary
-    cPersistent     <- arbitrary
-    cHostOnly       <- arbitrary
-    cSecureOnly     <- arbitrary
-    cHttpOnly       <- arbitrary
-    return $ Cookie cName
-                    cValue
-                    cExpiryTime
-                    cDomain
-                    cPath
-                    cCreationTime
-                    cLastAccessTime
-                    cPersistent
-                    cHostOnly
-                    cSecureOnly
-                    cHttpOnly
-
-
--- instance Arbitrary body => Arbitrary (Response body) where
-    -- arbitrary = Arbitrary <$> 
+-------------------------------------------------------------------------------
+-- | The main http-client interpreter. The client is free to specify the base
+-- effect monad ('m'), and in thise case this the result can be lifted into a
+-- higher monad transformer stack ('t')
+runTHttp :: ( r ~ ResponseType client
+            , Arbitrary r
+            , Monad m
+            , MonadIO m
+            , MonadTrans t
+            , Monad (t m)
+            )
+         => ignore
+         -- ^ a paramter that will be ignored. It is included so client's can
+         -- hot-swap interpreters.
+         -> FT (HttpF client) m a
+         -> t m a
+runTHttp = const (iterTM iterTMHttp)
