@@ -11,9 +11,9 @@ module Network.HTTP.Client.Free (
     , ResponseType
 
     -- * Types
-    -- ** The base free monad type
+    -- ** The base functor from which our free monad is generated.
     , HttpF(HttpF)
-    -- ** A type alias for 'FT (HttpF client) m a'
+    -- ** A helpful type alias
     , FreeHttp
 
     -- * smart constructors for http verbs
@@ -35,7 +35,6 @@ import Network.HTTP.Client.Free.Types (FreeHttp, HttpF(HttpF), RequestType, Resp
 import Network.HTTP.Types.Method (StdMethod(..))
 import Prelude hiding (head)
 
--- | smart constructors
 get :: Monad m
     => RequestType client
     -> FT (HttpF client) m (ResponseType client)
