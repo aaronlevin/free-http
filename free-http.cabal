@@ -61,12 +61,11 @@ build-type:          Simple
 extra-source-files:  README.md
                    , LICENSE
 
+cabal-version:       >=1.10
+
 source-repository head
   type: git
   location: git://github.com/aaronlevin/free-http.git
-
-cabal-version:       >=1.10
-
 
 library
   exposed-modules:     Network.HTTP.Client.Free.ArbitraryClient
@@ -79,16 +78,16 @@ library
 
   -- other-extensions:    
 
-  build-depends:       base >=4.8
-                     , bytestring
-                     , free
-                     , http-client
-                     , http-types
-                     , mtl
-                     , QuickCheck
-                     , text
-                     , time
-                     , transformers
+  build-depends:       base         >= 4.8
+                     , bytestring   >= 0.10.0.0
+                     , free         >= 4.0
+                     , http-client  >= 0.4.0
+                     , http-types   >= 0.8.0
+                     , mtl          >= 2.0.0.0
+                     , QuickCheck   >= 2.7
+                     , text         >= 1.0.0.0
+                     , time         >= 1.4.0.1
+                     , transformers >= 0.4.0.0
 
   hs-source-dirs:      src
 

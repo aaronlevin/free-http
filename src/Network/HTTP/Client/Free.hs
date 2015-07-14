@@ -31,8 +31,9 @@ module Network.HTTP.Client.Free (
 
 import Control.Monad.Trans.Free.Church (FT, liftF)
 import Network.HTTP.Client (httpLbs, Manager, Request, Response)
-import Network.HTTP.Client.Free.Types (HttpF(HttpF), RequestType, ResponseType)
+import Network.HTTP.Client.Free.Types (FreeHttp, HttpF(HttpF), RequestType, ResponseType)
 import Network.HTTP.Types.Method (StdMethod(..))
+import Prelude hiding (head)
 
 -- | smart constructors
 get :: Monad m
