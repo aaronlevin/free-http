@@ -1,4 +1,5 @@
-## Free Your Client... and Your Requests Will Follow
+Free Your Client... and Your Requests Will Follow
+=================================================
 
 `free-http` is an http-client based on Free Monads. `free-http` exposes a Free Monad to express standard http verbs as well as several backends to interpet programs written in the free monad using various http clients (currently: a pure client, an `http-client`-backed client, and a random client).
 
