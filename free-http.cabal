@@ -58,8 +58,12 @@ category:            Network
 
 build-type:          Simple
 
-extra-source-files:  README
+extra-source-files:  README.md
                    , LICENSE
+
+source-repository head
+  type: git
+  location: git://github.com/aaronlevin/free-http.git
 
 cabal-version:       >=1.10
 
