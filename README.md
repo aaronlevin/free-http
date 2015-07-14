@@ -27,7 +27,7 @@ To use free-http, simply:
   type instance ResponseType MyClient = Response ByteString
   ```
 
-  (or)
+  or
 
   ```
   import Network.HTTP.Free.Client.HttpClient (HttpClient)
