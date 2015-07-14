@@ -2,7 +2,32 @@
 -}
 {-# LANGUAGE TypeFamilies #-}
 
-module Network.HTTP.Client.Free where
+module Network.HTTP.Client.Free (
+
+    -- * Type Families
+    -- ** Base Request type
+      RequestType
+    -- ** Base REsponse type
+    , ResponseType
+
+    -- * Types
+    -- ** The base free monad type
+    , HttpF(HttpF)
+    -- ** A type alias for 'FT (HttpF client) m a'
+    , FreeHttp
+
+    -- * smart constructors for http verbs
+    , connect
+    , delete
+    , get
+    , head
+    , options
+    , patch
+    , post
+    , put
+    , trace
+
+) where
 
 import Control.Monad.Trans.Free.Church (FT, liftF)
 import Network.HTTP.Client (httpLbs, Manager, Request, Response)
