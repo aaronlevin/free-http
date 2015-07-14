@@ -7,7 +7,7 @@ module Network.HTTP.Client.Free (
     -- * Type Families
     -- ** Base Request type
       RequestType
-    -- ** Base REsponse type
+    -- ** Base Response type
     , ResponseType
 
     -- * Types
