@@ -10,41 +10,41 @@ To use free-http, simply:
 1. Import Network.HTTP.Client.Free to use the library.
 2. Choose your base request type by defining your own instance of the `RequestType` type family or importing one from an interpreter. E.g.
 
-```
-data MyClient
-type instance RequestType MyClient = Request
-```
+  ```
+  data MyClient
+  type instance RequestType MyClient = Request
+  ```
 
-or
+  or
 
-```
-import Network.HTTP.Free.Client.HttpClient (HttpClient)
-```
+  ```
+  import Network.HTTP.Free.Client.HttpClient (HttpClient)
+  ```
 
 3. Choose your base response type by defining your own instance of the `ResponseTYpe` type family or importing one from an interpreter. E.g.  
 
-```
-type instance ResponseType MyClient = Response ByteString
-```
+  ```
+  type instance ResponseType MyClient = Response ByteString
+  ```
 
-(or)
+  (or)
 
-```
-import Network.HTTP.Free.Client.HttpClient (HttpClient)
-```
+  ```
+  import Network.HTTP.Free.Client.HttpClient (HttpClient)
+  ```
 
 4. Write a program in the 'FreeHttp MyClient m a' free monad.
 5. Import an interpreter, such as 'HttpClient'
 
-```
-import Network.HTTP.Free.Client.HttpClient
-```
+  ```
+  import Network.HTTP.Free.Client.HttpClient
+  ```
 
 6. Run your program against the interpreter:
 
-```
-runHttp (myProgram :: FreeHttp MyClient IO String)
-```
+  ```
+  runHttp (myProgram :: FreeHttp MyClient IO String)
+  ```
 
 ## Design Choices
 
