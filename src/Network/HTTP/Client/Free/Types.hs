@@ -10,7 +10,7 @@ module Network.HTTP.Client.Free.Types (
     , ResponseType
 
     -- * The base functor of our library
-    , HttpF
+    , HttpF(HttpF)
 
     -- * Type aliases
     , FreeHttp
