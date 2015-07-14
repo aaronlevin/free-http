@@ -1,6 +1,6 @@
 name:                free-http
 
-version:             0.1.0.1
+version:             0.1.0.2
 
 synopsis:            An HTTP Client based on Free Monads.
 
@@ -68,7 +68,8 @@ source-repository head
   location: git://github.com/aaronlevin/free-http.git
 
 library
-  exposed-modules:     Network.HTTP.Client.Free.ArbitraryClient
+  exposed-modules:     Network.HTTP.Client.Free
+                       Network.HTTP.Client.Free.ArbitraryClient
                        Network.HTTP.Client.Free.HttpClient
                        Network.HTTP.Client.Free.PureClient
                        Network.HTTP.Client.Free.Types
