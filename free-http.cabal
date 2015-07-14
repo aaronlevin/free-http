@@ -78,7 +78,7 @@ library
 
   -- other-extensions:    
 
-  build-depends:       base         >= 4.8
+  build-depends:       base         > 4.6 && < 4.9
                      , bytestring   >= 0.10.0.0
                      , free         >= 4.0
                      , http-client  >= 0.4.0
