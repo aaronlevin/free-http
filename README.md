@@ -3,6 +3,8 @@ Free Your Client... and Your Requests Will Follow
 
 `free-http` is an http-client based on Free Monads. `free-http` exposes a Free Monad to express standard http verbs as well as several backends to interpet programs written in the free monad using various http clients (currently: a pure client, an `http-client`-backed client, and a random client).
 
+See [here](https://github.com/aaronlevin/free-http/blob/master/src/Network/HTTP/Client/Free/Examples.hs#L152) for an example.
+
 To use free-http, simply:
 
 1. Import Network.HTTP.Client.Free to use the library.
