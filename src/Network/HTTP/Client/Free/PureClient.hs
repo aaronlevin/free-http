@@ -40,22 +40,22 @@ iterTMHttp mock (HttpF _ req next) = next (mock req)
 -------------------------------------------------------------------------------
 -- | A pure interpreter based on a client-supplied mocking function
 runHttp :: Monad m
-        => ignore
+        => (RequestType client -> ResponseType client)
+        -> ignore
         -- ^ a parameter that will be ignored. It is included so client's can
         -- hot-swap interpreters (many will require a `Manager` type)
-        -> (RequestType client -> ResponseType client)
         -> FT (HttpF client) m a
         -> m a
-runHttp _ mock = iterT (iterTHttp mock)
+runHttp mock _ = iterT (iterTHttp mock)
 
 -------------------------------------------------------------------------------
 -- | A pure interpreter based on a client-supplied mocking function. The under-
 -- lying monad is `t m`, so computations will be lifted into `t m`.
 runTHttp :: (Monad m, MonadTrans t, Monad (t m))
-         => ignore
+         => (RequestType client -> ResponseType client)
+         -> ignore
          -- ^ a paramter that will be ignored. It is included so client's can
          -- host-swap interpreters (many will require a 'Manager' type)
-         -> (RequestType client -> ResponseType client)
          -> FT (HttpF client) m a
          -> t m a
-runTHttp _ mock = iterTM (iterTMHttp mock)
+runTHttp mock _ = iterTM (iterTMHttp mock)
