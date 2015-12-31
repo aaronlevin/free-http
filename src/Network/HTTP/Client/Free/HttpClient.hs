@@ -35,9 +35,9 @@ type instance ResponseType HttpClient = Response ByteString
 -- | Peel a layer of the 'HttpF' functor and run an http request with the data
 -- provided.
 iterTHttp :: ( Request ~ RequestType client
-             -- ^ The foundational request must be of type 'Request'
+                -- The foundational request must be of type 'Request'
              , Response ByteString ~ ResponseType client
-             -- ^ The foundational response must be of type 'Response ByteString'
+                -- The foundational response must be of type 'Response ByteString'
              , Monad m
              , MonadIO m
              )
@@ -51,9 +51,9 @@ iterTHttp manager (HttpF m r next) =
 -- | Peel a layer of the 'HttpF' functor and run an http request with the data.
 -- the base monad for this action is 't m'.
 iterTMHttp :: ( Request ~ RequestType client
-             -- ^ The foundational request must be of type 'Request'
+             -- The foundational request must be of type 'Request'
               , Response ByteString ~ ResponseType client
-             -- ^ The foundational response must be of type 'Response ByteString'
+             -- The foundational response must be of type 'Response ByteString'
               , Monad m
               , MonadTrans t
               , Monad (t m)
@@ -69,9 +69,9 @@ iterTMHttp manager (HttpF m r next) =
 -- | The main http-client interpreter. The client is free to specify the base
 -- effect monad so long as there is an instance of 'MonadIO' for it in scope.
 runHttp :: ( Request ~ RequestType client
-           -- ^ The foundational request must be of type 'Request'
+           -- The foundational request must be of type 'Request'
            , Response ByteString ~ ResponseType client
-           -- ^ The foundational response must be of type 'Response ByteString'
+           -- The foundational response must be of type 'Response ByteString'
            , Monad m
            , MonadIO m
            )
@@ -85,9 +85,9 @@ runHttp manager = iterT (iterTHttp manager)
 -- effect monad ('m'), and in thise case this the result can be lifted into a
 -- higher monad transformer stack ('t')
 runTHttp :: ( Request ~ RequestType client
-            -- ^ The foundational request must be of type 'Request'
+            -- The foundational request must be of type 'Request'
             , Response ByteString ~ ResponseType client
-            -- ^ The foundational response must be of type 'Response ByteString'
+            -- The foundational response must be of type 'Response ByteString'
             , Monad m
             , MonadIO m
             , MonadTrans t
